@@ -1,62 +1,71 @@
 <template>
-  <div class="login-background">
-    <div class="login-content">
-      <n-row gutter="60">
-        <n-col :span="12">
-          <div class="login-left">
-            <img src="@/assets/image/login-photo.webp" alt="" />
-          </div>
-        </n-col>
-        <n-col :span="12">
-          <div class="login-right">
-            <h2 class="login-title">Kirish</h2>
+  <n-spin :show="loader">
+    <div class="login-background">
+      <div class="login-content">
+        <n-row gutter="60">
+          <n-col :span="12">
+            <div class="login-left">
+              <img src="@/assets/image/login-photo.webp" alt="" />
+            </div>
+          </n-col>
+          <n-col :span="12">
+            <div class="login-right">
+              <h2 class="login-title">Kirish</h2>
 
-            <n-form size="large" ref="formRef" :model="user" :rules="rules">
-              <n-form-item path="phone" label="Telefon raqam">
-                <n-input
-                  v-maska="'+998 ## ### ## ##'"
-                  v-model:value="user.phone"
-                  @keyup="keyupPhone"
-                  @keydown.enter.prevent
-                />
-              </n-form-item>
-              <n-form-item path="password" label="Parol">
-                <n-input
-                  v-model:value="user.password"
-                  type="password"
-                  show-password-on="mousedown"
-                  @keydown.enter.prevent
-                />
-              </n-form-item>
+              <n-form size="large" ref="formRef" :model="user" :rules="rules">
+                <n-form-item path="phone" label="Login">
+                  <n-input
+                    v-model:value="user.login"
+                    placeholder="Loginni kiriting"
+                    @keydown.enter.prevent
+                  />
+                </n-form-item>
+                <n-form-item path="password" label="Parol">
+                  <n-input
+                    v-model:value="user.password"
+                    type="password"
+                    show-password-on="mousedown"
+                    placeholder="Parolni kiriting"
+                    @keydown.enter.prevent
+                  />
+                </n-form-item>
 
-              <n-button
-                type="success"
-                block
-                size="large"
-                @click="handleValidateClick"
-              >
-                Kirish
-              </n-button>
-            </n-form>
-          </div>
-        </n-col>
-      </n-row>
+                <n-button
+                  type="success"
+                  block
+                  size="large"
+                  @click="handleValidateClick"
+                >
+                  Kirish
+                </n-button>
+              </n-form>
+            </div>
+          </n-col>
+        </n-row>
+      </div>
     </div>
-  </div>
+  </n-spin>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, inject } from "vue";
+import { useRouter } from "vue-router";
 import { useMessage } from "naive-ui";
+import { useAuthStore } from "@/stores/auth.js";
+const authStore = useAuthStore();
+const router = useRouter();
+const $axios = inject("$axios");
 const message = useMessage();
 const formRef = ref(null);
 const user = ref({
-  phone: "+998 ",
+  login: "",
   password: null,
 });
 
+const loader = ref(false);
+
 const rules = ref({
-  phone: [
+  login: [
     {
       required: true,
       validator(rule: any, value: any) {
@@ -83,20 +92,26 @@ function handleValidateClick() {
   const messageReactive = message.loading("Verifying", {
     duration: 0,
   });
-  formRef.value?.validate((errors: any) => {
+  formRef.value?.validate(async (errors: any): any => {
     if (!errors) {
-      message.success("Valid");
+      loader.value = true;
+
+      let response = await authStore.authUser(user.value);
+      console.log(response);
+
+      // authStore.authUser(user.value).then((res) => {
+      //   console.log(res);
+      //   if (res.success) {
+      //     router.push("/");
+      //   } else {
+      //     message.error("Login yoki parol xato");
+      //   }
+      // });
     } else {
       message.error("Invalid");
     }
     messageReactive.destroy();
   });
-}
-
-function keyupPhone() {
-  if (user.value.phone.length < 5) {
-    user.value.phone = "+998 ";
-  }
 }
 </script>
 

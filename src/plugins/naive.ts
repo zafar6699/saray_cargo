@@ -30,6 +30,7 @@ import {
   NEmpty,
   NFormItemGi,
   NMessageProvider,
+  NSpin,
 } from "naive-ui";
 
 const naive = create({
@@ -62,6 +63,7 @@ const naive = create({
     NPagination,
     NEmpty,
     NMessageProvider,
+    NSpin,
   ],
 });
 
