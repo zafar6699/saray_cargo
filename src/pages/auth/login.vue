@@ -53,6 +53,7 @@ import { useRouter } from "vue-router";
 import { useMessage } from "naive-ui";
 import { useAuthStore } from "@/stores/auth.js";
 const authStore = useAuthStore();
+authStore.$onAction(callback, true);
 const router = useRouter();
 const $axios = inject("$axios");
 const message = useMessage();
