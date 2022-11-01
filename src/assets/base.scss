@@ -1,0 +1,71 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.n-card {
+  margin-top: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  &__left {
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 15px;
+  }
+}
+.text-sm {
+  font-size: 16px;
+  color: #000000;
+  font-weight: 600;
+}
+
+.sort-content {
+  .n-form-item-blank {
+    display: block;
+  }
+  .n-form-item-feedback-wrapper {
+    display: none;
+  }
+  .start-bottom > div {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    padding-bottom: 1px;
+  }
+}
+.mb-24 {
+  margin-bottom: 24px;
+}
+.n-table {
+  td,
+  th {
+    // max-width: 200px;
+  }
+}
+
+.table-actions {
+  th:last-child,
+  td:last-child {
+    width: 150px !important;
+  }
+}
