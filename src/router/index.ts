@@ -32,9 +32,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
+  console.log("user", authStore.user);
   if (to.matched.some((record) => record.meta.guest) || authStore.isAuth) {
     if (to.name == "login" && authStore.isAuth) {
-      next("/scoring/1");
+      next("/");
     } else {
       next();
     }

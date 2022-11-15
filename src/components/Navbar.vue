@@ -9,7 +9,7 @@
           <div class="header-right">
             <h2></h2>
             <div>
-              <n-dropdown :options="options">
+              <n-dropdown :options="options" @select="selectUserDropdown">
                 <n-button size="large">
                   <template #icon>
                     <span>
@@ -20,7 +20,9 @@
                       />
                     </span>
                   </template>
-                  <span style="margin-left: 10px">Z.Qalandarov</span>
+                  <span style="margin-left: 10px">
+                    {{ authStore.user.name }}
+                  </span>
                 </n-button>
               </n-dropdown>
             </div>
@@ -55,9 +57,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { h, defineComponent, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { NIcon } from "naive-ui";
 import {
   BookOutline as BookIcon,
@@ -67,6 +69,7 @@ import {
   Pencil as EditIcon,
   LogOutOutline as LogoutIcon,
 } from "@vicons/ionicons5";
+import { useAuthStore } from "@/stores/auth";
 
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -126,9 +129,21 @@ const menuOptions = [
 ];
 export default defineComponent({
   setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+    function selectUserDropdown(item) {
+      console.log("item", item);
+      switch (item) {
+        case "logout":
+          authStore.logOut();
+          router.push("/login");
+      }
+    }
     return {
+      authStore,
       inverted: ref(false),
       menuOptions,
+      selectUserDropdown,
       options: [
         {
           label: "Profil",

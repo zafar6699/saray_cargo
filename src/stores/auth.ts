@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/plugins/api";
 export const useAuthStore = defineStore("authStore", {
-  id: "auth",
   state: () => ({
     user: null,
   }),
@@ -12,33 +11,32 @@ export const useAuthStore = defineStore("authStore", {
   },
   actions: {
     async getUser() {
+      let response;
       if (localStorage.getItem("access_token")) {
-        await api.get("api/v1/profile/info").then((res) => {
-          this.user = res.data;
-          return {
+        await api.get("api/auth/me").then((res) => {
+          this.user = res.data.user;
+          response = {
             success: true,
             user: this.user,
           };
         });
       }
+
+      return response;
     },
 
-    async authUser(data) {
+    async authUser(data: object) {
+      let response = null;
       await api
-        .post("api/v1/user/login", {
+        .post("api/auth/login", {
           username: data.login,
           password: data.password,
         })
-        .then(async (res) => {
-          if (res.success) {
-            localStorage.setItem("access_token", res.data.token);
-            await this.getUser();
-          } else {
-            return {
-              success: false,
-            };
-          }
+        .then(async (res: any) => {
+          localStorage.setItem("access_token", res.data.token);
+          response = await this.getUser();
         });
+      return response;
     },
 
     logOut() {
@@ -48,10 +46,5 @@ export const useAuthStore = defineStore("authStore", {
   },
   persist: {
     enabled: true,
-    strategies: [
-      {
-        storage: localStorage,
-      },
-    ],
   },
 });

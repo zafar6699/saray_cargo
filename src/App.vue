@@ -8,7 +8,7 @@ export default {
   },
 
   computed: {
-    layout() {
+    layout(): any {
       return this.$route.meta.layout
         ? `${this.$route.meta.layout}-layout`
         : "main-layout";

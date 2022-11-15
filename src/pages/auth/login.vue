@@ -13,7 +13,7 @@
               <h2 class="login-title">Kirish</h2>
 
               <n-form size="large" ref="formRef" :model="user" :rules="rules">
-                <n-form-item path="phone" label="Login">
+                <n-form-item path="login" label="Login">
                   <n-input
                     v-model:value="user.login"
                     placeholder="Loginni kiriting"
@@ -51,11 +51,9 @@
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
 import { useMessage } from "naive-ui";
-import { useAuthStore } from "@/stores/auth.js";
+import { useAuthStore } from "@/stores/auth";
 const authStore = useAuthStore();
-authStore.$onAction(callback, true);
 const router = useRouter();
-const $axios = inject("$axios");
 const message = useMessage();
 const formRef = ref(null);
 const user = ref({
@@ -71,9 +69,7 @@ const rules = ref({
       required: true,
       validator(rule: any, value: any) {
         if (!value) {
-          return new Error("Telefon raqamni kiriting");
-        } else if (value.length < 17) {
-          return new Error("To'liq to'ldiring");
+          return new Error("Loginni kiriting");
         }
         return true;
       },
@@ -96,20 +92,16 @@ function handleValidateClick() {
   formRef.value?.validate(async (errors: any): any => {
     if (!errors) {
       loader.value = true;
-
-      let response = await authStore.authUser(user.value);
-      console.log(response);
-
-      // authStore.authUser(user.value).then((res) => {
-      //   console.log(res);
-      //   if (res.success) {
-      //     router.push("/");
-      //   } else {
-      //     message.error("Login yoki parol xato");
-      //   }
-      // });
+      authStore.authUser(user.value).then((res) => {
+        if (res.success) {
+          router.push("/");
+        } else {
+          message.error("Login yoki parol xato");
+        }
+        loader.value = false;
+      });
     } else {
-      message.error("Invalid");
+      message.error("Xatolik");
     }
     messageReactive.destroy();
   });

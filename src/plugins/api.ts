@@ -1,14 +1,15 @@
 import axios from "axios";
 import router from "../router/index";
 const $axios = axios.create({
-  baseURL: "https://backend.texnomart.uz/",
+  baseURL: "https://sarayexpress.uz/",
 });
 
 $axios.interceptors.request.use(
   (config): any => {
     const token = localStorage.getItem("access_token");
+    config.headers["Accept"] = "application/json";
     if (token) {
-      config.headers.common["Authorization"] = `Bearer ${token}`;
+      config.headers["AUTHORIZATION"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -25,6 +26,7 @@ $axios.interceptors.response.use(
     }
   },
   (error): any => {
+    console.log(error);
     if (error.response.status) {
       switch (error.response.status) {
         case 400:
