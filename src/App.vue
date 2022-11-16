@@ -2,6 +2,7 @@
 import MainLayout from "@/layouts/MainLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 export default {
+  //aa
   components: {
     "main-layout": MainLayout,
     "empty-layout": EmptyLayout,
