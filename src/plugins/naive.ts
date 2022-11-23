@@ -31,6 +31,8 @@ import {
   NFormItemGi,
   NMessageProvider,
   NSpin,
+  NModal,
+  NUpload,
 } from "naive-ui";
 
 const naive = create({
@@ -64,6 +66,8 @@ const naive = create({
     NEmpty,
     NMessageProvider,
     NSpin,
+    NModal,
+    NUpload,
   ],
 });
 

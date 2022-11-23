@@ -1,9 +1,10 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
+    "extends": "@vue/tsconfig/tsconfig.web.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     }
-  }
 }

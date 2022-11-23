@@ -1,27 +1,27 @@
-<script lang="ts">
+<script>
 import MainLayout from "@/layouts/MainLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 export default {
-  //aa
-  components: {
-    "main-layout": MainLayout,
-    "empty-layout": EmptyLayout,
-  },
-
-  computed: {
-    layout(): any {
-      return this.$route.meta.layout
-        ? `${this.$route.meta.layout}-layout`
-        : "main-layout";
+    //aa
+    components: {
+        "main-layout": MainLayout,
+        "empty-layout": EmptyLayout,
     },
-  },
+
+    computed: {
+        layout() {
+            return this.$route.meta.layout
+                ? `${this.$route.meta.layout}-layout`
+                : "main-layout";
+        },
+    },
 };
 </script>
 
 <template>
-  <n-message-provider>
-    <component :is="layout"></component>
-  </n-message-provider>
+    <n-message-provider>
+        <component :is="layout"></component>
+    </n-message-provider>
 </template>
 
 <style></style>
