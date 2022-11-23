@@ -1,18 +1,17 @@
 <template>
   <div>
-    <n-spin :show="loader">
-      <n-breadcrumb>
-        <n-breadcrumb-item>
-          <router-link to="/">
-            <n-icon>
-              <home-outline></home-outline>
-            </n-icon>
-            Bosh sahifa
-          </router-link>
-        </n-breadcrumb-item>
-        <n-breadcrumb-item>Buyurtmalar</n-breadcrumb-item>
-      </n-breadcrumb>
-      <!-- <n-card size="medium">
+    <n-breadcrumb>
+      <n-breadcrumb-item>
+        <router-link to="/">
+          <n-icon>
+            <home-outline></home-outline>
+          </n-icon>
+          Bosh sahifa
+        </router-link>
+      </n-breadcrumb-item>
+      <n-breadcrumb-item>Buyurtmalar</n-breadcrumb-item>
+    </n-breadcrumb>
+    <!-- <n-card size="medium">
             <div class="sort-content">
                 <n-form ref="formRef">
                     <n-row :gutter="[24, 16]">
@@ -62,58 +61,54 @@
                 </n-form>
             </div>
         </n-card> -->
-      <n-spin :show="loading">
-        <n-card size="medium">
-          <div class="page-header mb-24">
-            <div class="page-header__left">
-              <back-button></back-button>
-              <h4 class="page-header__title">Buyurtmalar</h4>
-            </div>
-
-            <div class="page-header__right">
-              <n-button
-                strong
-                type="success"
-                @click="showModal = true"
-                size="large"
-              >
-                <template #icon>
-                  <n-icon>
-                    <add-outline></add-outline>
-                  </n-icon>
-                </template>
-                Qo'shish
-              </n-button>
-            </div>
+    <n-spin :show="loading">
+      <n-card size="medium">
+        <div class="page-header mb-24">
+          <div class="page-header__left">
+            <back-button></back-button>
+            <h4 class="page-header__title">Buyurtmalar</h4>
           </div>
-          <n-table
-            :single-line="false"
-            class="table-actions mb-24"
-            size="small"
-          >
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Mahsulot kodi</th>
-                <th>Mahsulot nomi</th>
-                <th>Ro'yxatdan o'tgan vaqti</th>
-                <th>Holati</th>
-                <!-- <th>Role</th>
+
+          <div class="page-header__right">
+            <n-button
+              strong
+              type="success"
+              @click="showModal = true"
+              size="large"
+            >
+              <template #icon>
+                <n-icon>
+                  <add-outline></add-outline>
+                </n-icon>
+              </template>
+              Qo'shish
+            </n-button>
+          </div>
+        </div>
+        <n-table :single-line="false" class="table-actions mb-24" size="small">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Mahsulot kodi</th>
+              <th>Mahsulot nomi</th>
+              <th>Ro'yxatdan o'tgan vaqti</th>
+              <th>Holati</th>
+              <!-- <th>Role</th>
               <th></th> -->
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in products" :key="index">
-                <td>{{ (page - 1) * limit + index + 1 }}</td>
-                <td>{{ item.code }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.time }}</td>
-                <td>{{ item.status }}</td>
-                <!-- <td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in products" :key="index">
+              <td>{{ (page - 1) * limit + index + 1 }}</td>
+              <td>{{ item.code }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.time }}</td>
+              <td>{{ item.status }}</td>
+              <!-- <td>
                 <n-tag type="success" size="small"> User </n-tag>
               </td> -->
 
-                <!-- <td>
+              <!-- <td>
                 <n-space size="small" :wrap="false" justify="end">
                   <n-button strong quaternary circle>
                     <template #icon>
@@ -148,30 +143,31 @@
                   </n-popconfirm>
                 </n-space>
               </td> -->
-              </tr>
-            </tbody>
-          </n-table>
-          <n-space
-            justify="center"
-            class="mb-24"
-            v-if="!loading && products.length == 0"
-          >
-            <n-empty description="Ma'lumot topilmadi"> </n-empty>
-          </n-space>
+            </tr>
+          </tbody>
+        </n-table>
+        <n-space
+          justify="center"
+          class="mb-24"
+          v-if="!loading && products.length == 0"
+        >
+          <n-empty description="Ma'lumot topilmadi"> </n-empty>
+        </n-space>
 
-          <n-space justify="end">
-            <n-pagination
-              show-quick-jumper
-              v-model:page="page"
-              size="large"
-              :page-count="pageSize"
-              @update:page="pageChange"
-            />
-          </n-space>
-        </n-card>
-      </n-spin>
+        <n-space justify="end">
+          <n-pagination
+            show-quick-jumper
+            v-model:page="page"
+            size="large"
+            :page-count="pageSize"
+            @update:page="pageChange"
+          />
+        </n-space>
+      </n-card>
+    </n-spin>
 
-      <n-modal v-model:show="showModal" :mask-closable="true">
+    <n-modal v-model:show="showModal" :mask-closable="true">
+      <n-spin :show="loader">
         <n-card
           style="width: 600px"
           title="Modal"
@@ -231,8 +227,8 @@
             </n-button>
           </n-form>
         </n-card>
-      </n-modal>
-    </n-spin>
+      </n-spin>
+    </n-modal>
   </div>
 </template>
 
@@ -255,16 +251,7 @@ const rules = ref({
     trigger: "blur",
     message: "To'ldirilishi shart",
   },
-  file: {
-    required: true,
-    trigger: "blur",
-    message: "To'ldirilishi shart",
-  },
-  time: {
-    required: true,
-    trigger: "blur",
-    message: "To'ldirilishi shart",
-  },
+
   status: {
     required: true,
     trigger: "blur",
@@ -297,25 +284,25 @@ function pageChange(page: number) {
 }
 
 function addData() {
-  // formRef.value?.validate(async (errors: any) => {
-  //   if (!errors) {
-  //     loader.value = true;
+  formRef.value?.validate(async (errors: any) => {
+    if (!errors) {
+      loader.value = true;
 
-  let date = new Date(formValue.value.time);
+      let date = new Date(formValue.value.time);
 
-  let year = date.getFullYear();
-  let month: any = date.getMonth() + 1;
-  let day: any = date.getDate();
+      let year = date.getFullYear();
+      let month: any = date.getMonth() + 1;
+      let day: any = date.getDate();
 
-  month = month < 10 ? `0${month}` : month;
-  day = day < 10 ? `0${day}` : day;
+      month = month < 10 ? `0${month}` : month;
+      day = day < 10 ? `0${day}` : day;
 
-  const fullDate = `${year}-${month}-${day}`;
-  console.log("full", formValue.value);
-  //   } else {
-  //     message.error("Xatolik");
-  //   }
-  // });
+      const fullDate = `${year}-${month}-${day}`;
+      console.log("full", formValue.value);
+    } else {
+      message.error("Ma'lumotlartni to'liq to'ldiring");
+    }
+  });
 }
 </script>
 
