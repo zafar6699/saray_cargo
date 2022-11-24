@@ -170,7 +170,7 @@
       <n-spin :show="loader">
         <n-card
           style="width: 600px"
-          title="Modal"
+          title="Buyurtma qo'shish"
           :bordered="false"
           role="dialog"
           aria-modal="true"
@@ -201,7 +201,7 @@
               />
             </n-form-item>
             <n-form-item label="Faylni yuklang" path="file">
-              <n-upload v-model="formValue.file">
+              <n-upload v-model="formValue.file" @change="changeFile">
                 <n-button>Fayl</n-button>
               </n-upload>
             </n-form-item>
@@ -236,13 +236,13 @@
 import {defineComponent, onMounted, ref} from "vue";
 import $axios from "@/plugins/api";
 import {useMessage} from "naive-ui";
-const showModal = ref(true);
+const showModal = ref(false);
 const formRef = ref(null);
 const message = useMessage();
 const formValue = ref({
   title: "",
   file: null,
-  time: null,
+  time: Date.now(),
   status: "",
 });
 const rules = ref({
@@ -251,7 +251,6 @@ const rules = ref({
     trigger: "blur",
     message: "To'ldirilishi shart",
   },
-
   status: {
     required: true,
     trigger: "blur",
@@ -285,7 +284,7 @@ function pageChange(page: number) {
 
 function addData() {
   formRef.value?.validate(async (errors: any) => {
-    if (!errors) {
+    if (!errors && formValue.value.file) {
       loader.value = true;
 
       let date = new Date(formValue.value.time);
@@ -298,11 +297,32 @@ function addData() {
       day = day < 10 ? `0${day}` : day;
 
       const fullDate = `${year}-${month}-${day}`;
-      console.log("full", formValue.value);
+
+      let fd = new FormData();
+      fd.append("title", formValue.value.title);
+      fd.append("file", formValue.value.file);
+      fd.append("time", fullDate);
+      fd.append("status", formValue.value.status);
+
+      $axios.post("api/product", fd).then((res) => {
+        loader.value = false;
+        showModal.value = false;
+        resetForm();
+        getProducts();
+      });
     } else {
       message.error("Ma'lumotlartni to'liq to'ldiring");
     }
   });
+}
+function resetForm() {
+  formValue.value.title = "";
+  formValue.value.file = null;
+  formValue.value.time = Date.now();
+  formValue.value.title = "";
+}
+function changeFile(file: any) {
+  formValue.value.file = file.file.file;
 }
 </script>
 
