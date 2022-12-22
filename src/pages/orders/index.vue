@@ -90,7 +90,7 @@
             <tr>
               <th>#</th>
               <th>Mahsulot kodi</th>
-              <th>Mahsulot nomi</th>
+              <th>Soni</th>
               <th>Ro'yxatdan o'tgan vaqti</th>
               <th>Holati</th>
               <!-- <th>Role</th>
@@ -101,7 +101,7 @@
             <tr v-for="(item, index) in products" :key="index">
               <td>{{ (page - 1) * limit + index + 1 }}</td>
               <td>{{ item.code }}</td>
-              <td>{{ item.name }}</td>
+              <td>{{ item?.count || "Aniqlanmagan" }}</td>
               <td>{{ item.time }}</td>
               <td>{{ item.status }}</td>
               <!-- <td>
